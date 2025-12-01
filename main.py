@@ -1,8 +1,12 @@
-from fonction_utilitaire.utilitaire import *
+from fonction_utilitaire.utilitaire import*
 from fonction_utilitaire.utilitaire import afficher_txt
 
 def main():
     clear_console()
+    nom, prenom, equipe = input("Votre nom :"), input("Votre prénom :"), input("Nom de votre équipe : ")
+    CURSOR.execute("INSERT INTO coatch (nom_coatch, prenom_coatch) VALUES (%s, %s)", (nom, prenom))
+    CURSOR.execute("INSERT INTO equipe (nom_equipe, id_coatch) VALUES (%s, LAST_INSERT_ID())", (equipe,))
+    CONN.commit()
     afficher_txt(MENU)
     user_choice = choix_interface(3)
     if user_choice == '1':
