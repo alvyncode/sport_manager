@@ -23,3 +23,26 @@ def afficher_txt(fichier_texte):
     with open(fichier_texte, "r", encoding="utf-8") as fichier:
         affichage = fichier.read()
     print(affichage)
+
+def poste()->str:
+    afficher_txt("affichage_et_rendu/selection_poste")
+    poste = input("Quel poste occupe-t-il ? :")
+    if poste == '1':
+        return "Gardien"
+    elif poste == '2':
+        return "Défenceur"
+    elif poste == '3':
+        return "Milieu de terrain"
+    elif poste == '4':
+        return "Attaquant"
+
+def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la table de liaison equipe_joueur
+    nom_equipe = input("Créer une équipe si vous en avez pas.\nDans le cas contraire, nous nous chargerons de la connexion :\n")
+    CURSOR.execute("SELECT id_equipe FROM equipe WHERE nom_equipe = %s",(nom_equipe,))
+    result = CURSOR.fetchone()
+    if result is not None :
+        return result[0]
+    else:
+        CURSOR.execute("INSERT INTO equipe (nom_equipe, score_equipe) VALUES (%s, %s)",(nom_equipe,0))
+        CONN.commit()
+        return CURSOR.lastrowid
