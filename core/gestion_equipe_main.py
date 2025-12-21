@@ -34,7 +34,7 @@ def ajouter_joueur_manuellement() -> int: #Fonction d'ajout manuel de joueur
         val = (nom, prenom, vitesse, score_technique,force,endurance,0)
         CURSOR.execute(sql, val)
         CONN.commit()
-        return CURSOR.lastrowid
+        return int(CURSOR.lastrowid)
     except ValueError or mysql.connector.errors.ProgrammingError:
         print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer.")
         ajouter_joueur_manuellement()
@@ -48,8 +48,10 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
     user_choice = choix_interface(3)
     if user_choice == '1': #Ajout manuel
         id_joueur = ajouter_joueur_manuellement()
+        CONN.commit()
         id_equipe = creation_connexion_equipe()
-        CURSOR.execute("INSERT INTO equipe_joueur (id_equipe, id_joueur,poste,titre_joueur) VALUES(%s,%s,%s,%s)",(id_joueur,id_equipe,poste(),"Réserviste"))
+        CONN.commit()
+        CURSOR.execute("INSERT INTO equipe_joueur (id_equipe, id_joueur,poste,titre_joueur) VALUES(%s,%s,%s,%s)",(id_equipe,id_joueur,poste(),"Réserviste"))
         CONN.commit()
     elif user_choice == '2': #Ajout par algorithme
         pass

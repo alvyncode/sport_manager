@@ -45,4 +45,4 @@ def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la 
     else:
         CURSOR.execute("INSERT INTO equipe (nom_equipe, score_equipe) VALUES (%s, %s)",(nom_equipe,0))
         CONN.commit()
-        return CURSOR.lastrowid
+        return int(CURSOR.lastrowid)
