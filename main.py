@@ -1,3 +1,4 @@
+from core.gestion_match import afficher_historique_matchs, jouer_match
 from fonction_utilitaire.utilitaire import*
 from core.gestion_equipe_main import*
 def main():
@@ -8,12 +9,11 @@ def main():
         gestion_equipe()
         # Appeler la fonction pour gérer le joueur
     elif user_choice == '2':
-        print("Jouer match sélectionné.")
+        jouer_match()
         # Appeler la fonction pour jouer un match
     elif user_choice == '3':
-        print("Historique des matchs sélectionné.")
+        afficher_historique_matchs()
         # Appeler la fonction pour afficher l'historique des matchs
     elif user_choice in ['X', 'x']:
         print("Quitter le programme.")
 main()
-
