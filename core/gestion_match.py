@@ -1,3 +1,4 @@
+
 from datetime import datetime
 import mysql.connector
 from config import CURSOR, CONN
@@ -22,7 +23,15 @@ def choisir_equipe_par_liste(equipes, titre="Choisis une équipe"):
 
 
 def get_equipes():
-    CURSOR.execute("SELECT id_equipe, nom_equipe FROM equipe ORDER BY nom_equipe")
+    CURSOR.execute("""
+        SELECT e.id_equipe, e.nom_equipe
+        FROM equipe e
+        JOIN equipe_joueur ej ON ej.id_equipe = e.id_equipe
+        WHERE ej.titre_joueur = 'Titulaire'
+        GROUP BY e.id_equipe, e.nom_equipe
+        HAVING COUNT(*) >= 11
+        ORDER BY e.nom_equipe
+    """)
     return CURSOR.fetchall()
 
 # On garantit qu'il existe une ligne dans equipe_adverse pour l'équipe choisie.
