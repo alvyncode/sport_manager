@@ -60,19 +60,6 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
     elif user_choice in ['X', 'x']:
         print("Retour au menu de gestion de l'équipe.")
 
-def afficher_joueur_equipe():
-    def afficher_titulaires():
-        sql = "SELECT * FROM joueur WHERE est_titulaire = 1"
-        CURSOR.execute(sql)
-        result = CURSOR.fetchall()
-        if result:
-            headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance", "Blessure", "Titulaire"]
-            table = [list(row) for row in result]
-            print("Joueurs Titulaires :")
-            print(tabulate(table, headers, tablefmt="grid"))
-        else:
-            print("Aucun joueur titulaire trouvé.")
-
 def gestion_equipe():
     clear_console()
     afficher_txt(MENU_GESTION_EQUIPE)
@@ -81,7 +68,7 @@ def gestion_equipe():
         recruter_joueur()
     elif user_choice == '2':#configuration-mise en place des titulaires, ajout et modification de poste/
         pass
-    elif user_choice == '3':#afficher les joueurs insérer dans la BDD
+    elif user_choice == '3':#afficher les joueurs inséré dans la BDD
         clear_console()
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
