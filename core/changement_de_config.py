@@ -53,5 +53,3 @@ def changer_configuration():
     except TypeError:
         print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer !")
         changer_configuration()
-
-changer_configuration()
