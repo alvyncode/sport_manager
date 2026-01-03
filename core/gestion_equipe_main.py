@@ -1,6 +1,7 @@
 from fonction_utilitaire.utilitaire import *
 from config import *
 from tabulate import tabulate
+import random
 
 def afficher_joueurs_disponibles():
     sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur WHERE score_joueur is NOT NUll"
@@ -40,6 +41,36 @@ def ajouter_joueur_manuellement() -> int: #Fonction d'ajout manuel de joueur
         ajouter_joueur_manuellement()
 
 def faire_confiance_au_selectionneur() ->None: #Fonction d'ajout de joueur par algorithme (Aléatoirement)
+    
+    def definir_nom_prenom_aleatoire()->tuple:#definir nom et prenom aléatoire grace a une table de nom et prenom prédéfinie
+        CURSOR.execute("SELECT nom, prenom FROM nom_prenom_r ORDER BY RAND() LIMIT 1")
+        resultat = CURSOR.fetchone()
+        if resultat is None:
+            raise Exception("Aucun nom/prénom trouvé dans la table nom_prenom_r")
+        nom, prenom = resultat
+        return nom, prenom
+    def competances_aleatoires():
+        
+        vitesse = int(random.triangular(0,100,65))
+        score_technique = int(random.triangular(0,100,65))
+        force = int(random.triangular(0,100,65))
+        endurance = int(random.triangular(0,100,65))
+        return vitesse, score_technique, force, endurance
+    try:
+        nom, prenom = definir_nom_prenom_aleatoire()
+        vitesse, score_technique, force, endurance = competances_aleatoires()
+        sql = "INSERT INTO joueur (nom_joueur, prenom_joueur, vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur,blessure_joueur) VALUES (%s, %s, %s, %s, %s, %s, %s)"
+        val = (nom, prenom, vitesse, score_technique,force,endurance,0)
+        CURSOR.execute(sql, val)
+        CONN.commit()
+        return CURSOR.lastrowid
+    except ValueError or mysql.connector.errors.ProgrammingError:
+        print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer.")
+        faire_confiance_au_selectionneur()
+
+
+
+
     pass
 
 def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)

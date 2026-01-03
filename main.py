@@ -1,5 +1,6 @@
 from fonction_utilitaire.utilitaire import*
 from core.gestion_equipe_main import*
+
 def main():
     clear_console()
     afficher_txt(MENU)
