@@ -41,6 +41,10 @@ def changer_configuration():
     SET titre_joueur =%s, poste =%s
     WHERE id_joueur = %s """,(titred,posted,id_joueur,))
         CONN.commit()
+        # Import ici pour éviter l'import circulaire
+        from core.gestion_equipe_main import update_score_joueur, update_score_equipe
+        update_score_joueur(id_joueur)
+        update_score_equipe(equipe)
     else:
         print("Vous avez atteint le quota de titulaires")
 
