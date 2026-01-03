@@ -35,7 +35,7 @@ def ajouter_joueur_manuellement() -> int: #Fonction d'ajout manuel de joueur
         val = (nom, prenom, vitesse, score_technique,force,endurance,0)
         CURSOR.execute(sql, val)
         CONN.commit()
-        return CURSOR.lastrowid
+        return int(CURSOR.lastrowid)
     except ValueError or mysql.connector.errors.ProgrammingError:
         print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer.")
         ajouter_joueur_manuellement()
@@ -79,8 +79,10 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
     user_choice = choix_interface(3)
     if user_choice == '1': #Ajout manuel
         id_joueur = ajouter_joueur_manuellement()
+        CONN.commit()
         id_equipe = creation_connexion_equipe()
-        CURSOR.execute("INSERT INTO equipe_joueur (id_equipe, id_joueur,poste,titre_joueur) VALUES(%s,%s,%s,%s)",(id_joueur,id_equipe,poste(),"Réserviste"))
+        CONN.commit()
+        CURSOR.execute("INSERT INTO equipe_joueur (id_equipe, id_joueur,poste,titre_joueur) VALUES(%s,%s,%s,%s)",(id_equipe,id_joueur,poste(),"Réserviste"))
         CONN.commit()
     elif user_choice == '2': #Ajout par algorithme
         pass
@@ -88,19 +90,6 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
         pass
     elif user_choice in ['X', 'x']:
         print("Retour au menu de gestion de l'équipe.")
-
-def afficher_joueur_equipe():
-    def afficher_titulaires():
-        sql = "SELECT * FROM joueur WHERE est_titulaire = 1"
-        CURSOR.execute(sql)
-        result = CURSOR.fetchall()
-        if result:
-            headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance", "Blessure", "Titulaire"]
-            table = [list(row) for row in result]
-            print("Joueurs Titulaires :")
-            print(tabulate(table, headers, tablefmt="grid"))
-        else:
-            print("Aucun joueur titulaire trouvé.")
 
 def gestion_equipe():
     clear_console()
@@ -110,7 +99,7 @@ def gestion_equipe():
         recruter_joueur()
     elif user_choice == '2':#configuration-mise en place des titulaires, ajout et modification de poste/
         pass
-    elif user_choice == '3':#afficher les joueurs insérer dans la BDD
+    elif user_choice == '3':#afficher les joueurs inséré dans la BDD
         clear_console()
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :

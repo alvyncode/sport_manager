@@ -26,15 +26,23 @@ def afficher_txt(fichier_texte):
 
 def poste()->str:
     afficher_txt("affichage_et_rendu/selection_poste")
-    poste = input("Quel poste occupe-t-il ? :")
+    poste = input("Poste :")
     if poste == '1':
         return "Gardien"
     elif poste == '2':
-        return "Défenceur"
+        return "Défenseur"
     elif poste == '3':
         return "Milieu de terrain"
     elif poste == '4':
         return "Attaquant"
+
+def titre()->str:
+    afficher_txt("affichage_et_rendu/selection_titre")
+    titre = input("Titre :")
+    if titre == '1':
+        return "Titulaire"
+    elif titre == '2':
+        return "Réserviste"
 
 def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la table de liaison equipe_joueur
     nom_equipe = input("Créer une équipe si vous en avez pas.\nDans le cas contraire, nous nous chargerons de la connexion :\n")
@@ -45,4 +53,4 @@ def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la 
     else:
         CURSOR.execute("INSERT INTO equipe (nom_equipe, score_equipe) VALUES (%s, %s)",(nom_equipe,0))
         CONN.commit()
-        return CURSOR.lastrowid
+        return int(CURSOR.lastrowid)
