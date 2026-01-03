@@ -2,6 +2,7 @@ from fonction_utilitaire.utilitaire import *
 from config import *
 from tabulate import tabulate
 import random
+from core.changement_de_config import*
 
 def afficher_joueurs_disponibles():
     sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur WHERE score_joueur is NOT NUll"
@@ -40,8 +41,7 @@ def ajouter_joueur_manuellement() -> int: #Fonction d'ajout manuel de joueur
         print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer.")
         ajouter_joueur_manuellement()
 
-def faire_confiance_au_selectionneur() ->None: #Fonction d'ajout de joueur par algorithme (Aléatoirement)
-    
+def faire_confiance_au_selectionneur() -> None: #Fonction d'ajout de joueur par algorithme (Aléatoirement)
     def definir_nom_prenom_aleatoire()->tuple:#definir nom et prenom aléatoire grace a une table de nom et prenom prédéfinie
         CURSOR.execute("SELECT nom, prenom FROM nom_prenom_r ORDER BY RAND() LIMIT 1")
         resultat = CURSOR.fetchone()
@@ -50,7 +50,6 @@ def faire_confiance_au_selectionneur() ->None: #Fonction d'ajout de joueur par a
         nom, prenom = resultat
         return nom, prenom
     def competances_aleatoires():
-        
         vitesse = int(random.triangular(0,100,65))
         score_technique = int(random.triangular(0,100,65))
         force = int(random.triangular(0,100,65))
@@ -68,11 +67,6 @@ def faire_confiance_au_selectionneur() ->None: #Fonction d'ajout de joueur par a
         print("Il semblerait qu'une erreur s'est produite. Veuillez réessayer.")
         faire_confiance_au_selectionneur()
 
-
-
-
-    pass
-
 def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
     clear_console()
     afficher_txt(CHOIX_AJOUT_JOUEUR)
@@ -85,9 +79,12 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
         CURSOR.execute("INSERT INTO equipe_joueur (id_equipe, id_joueur,poste,titre_joueur) VALUES(%s,%s,%s,%s)",(id_equipe,id_joueur,poste(),"Réserviste"))
         CONN.commit()
     elif user_choice == '2': #Ajout par algorithme
-        pass
+        id_joueur = faire_confiance_au_selectionneur()
+        id_equipe = choisir_equipe()
+        CURSOR.execute("INSERT INTO equipe_joueur( id_joueur,id_equipe) VALUES(%s,%s)",(id_joueur,id_equipe))
+        CONN.commit()
     elif user_choice == '3': #Voir liste des joueurs ajoutés
-        pass
+        afficher_joueurs_disponibles()
     elif user_choice in ['X', 'x']:
         print("Retour au menu de gestion de l'équipe.")
 
@@ -98,9 +95,11 @@ def gestion_equipe():
     if user_choice == '1':#Recruter un joueur
         recruter_joueur()
     elif user_choice == '2':#configuration-mise en place des titulaires, ajout et modification de poste/
-        pass
+        changer_configuration()
     elif user_choice == '3':#afficher les joueurs inséré dans la BDD
         clear_console()
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
             gestion_equipe()
+
+recruter_joueur()

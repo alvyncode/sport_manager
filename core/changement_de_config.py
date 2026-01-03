@@ -44,4 +44,3 @@ def changer_configuration():
     else:
         print("Vous avez atteint le quota de titulaires")
 
-changer_configuration()

@@ -54,3 +54,9 @@ def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la 
         CURSOR.execute("INSERT INTO equipe (nom_equipe, score_equipe) VALUES (%s, %s)",(nom_equipe,0))
         CONN.commit()
         return int(CURSOR.lastrowid)
+    
+def choisir_equipe():
+        nom_equipe = input("Sélectionner une equipe existante : ")
+        CURSOR.execute("SELECT id_equipe FROM equipe WHERE nom_equipe = %s",(nom_equipe,))
+        id_equipe = CURSOR.fetchone()[0]
+        return id_equipe
