@@ -1,5 +1,4 @@
 from core.gestion_match import afficher_historique_matchs, jouer_match
-from fonction_utilitaire.utilitaire import*
 from core.gestion_equipe_main import*
 
 def main():

@@ -1,8 +1,7 @@
-
 from datetime import datetime
-import mysql.connector
-from config import CURSOR, CONN
 from fonction_utilitaire.utilitaire import clear_console
+from config import CURSOR, CONN
+import mysql.connector
 import random
 
 # Afficher une liste d'équipes et permettre à l'utilisateur d'en choisir une

@@ -1,8 +1,8 @@
 from fonction_utilitaire.utilitaire import *
-from config import *
-from tabulate import tabulate
-import random
 from core.changement_de_config import*
+from tabulate import tabulate
+from config import *
+import random
 
 def afficher_joueurs_disponibles():
     sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur WHERE score_joueur is NOT NUll"
@@ -16,8 +16,6 @@ def afficher_joueurs_disponibles():
     else:
         print("Aucun joueur disponible trouvé.")
 
-    if input():
-        return 
 
 def ajouter_joueur_manuellement() -> int: #Fonction d'ajout manuel de joueur
     def demander_competence(message, min_val=0, max_val=100):
@@ -70,7 +68,7 @@ def faire_confiance_au_selectionneur() -> None: #Fonction d'ajout de joueur par 
 def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
     clear_console()
     afficher_txt(CHOIX_AJOUT_JOUEUR)
-    user_choice = choix_interface(3)
+    user_choice = choix_interface(2)
     if user_choice == '1': #Ajout manuel
         id_joueur = ajouter_joueur_manuellement()
         CONN.commit()
@@ -83,11 +81,7 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
         id_equipe = choisir_equipe()
         CURSOR.execute("INSERT INTO equipe_joueur( id_joueur,id_equipe) VALUES(%s,%s)",(id_joueur,id_equipe))
         CONN.commit()
-    elif user_choice == '3': #Voir liste des joueurs ajoutés
-        afficher_joueurs_disponibles()
-    elif user_choice in ['X', 'x']:
-        print("Retour au menu de gestion de l'équipe.")
-
+        
 def gestion_equipe():
     clear_console()
     afficher_txt(MENU_GESTION_EQUIPE)
