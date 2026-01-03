@@ -101,5 +101,3 @@ def gestion_equipe():
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
             gestion_equipe()
-
-recruter_joueur()
