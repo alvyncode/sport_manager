@@ -5,11 +5,11 @@ from config import *
 import random
 
 def afficher_joueurs_disponibles():
-    sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur WHERE score_joueur is NOT NUll"
+    sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur"
     CURSOR.execute(sql)
     result = CURSOR.fetchall()
     if result:
-        headers = ["ID", "Nom", "Prénom","Score", "Vitesse", "Score Technique", "Force", "Endurance", "Blessure"]
+        headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance"]
         table = [list(row) for row in result]
         print("Joueurs Disponibles :")
         print(tabulate(table, headers, tablefmt="grid"))
@@ -95,3 +95,4 @@ def gestion_equipe():
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
             gestion_equipe()
+gestion_equipe()
