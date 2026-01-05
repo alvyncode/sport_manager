@@ -3,6 +3,7 @@ from core.changement_de_config import*
 from tabulate import tabulate
 from config import *
 import random
+import time
 
 def afficher_joueurs_disponibles():
     sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur"
@@ -81,6 +82,8 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
         id_equipe = choisir_equipe()
         CURSOR.execute("INSERT INTO equipe_joueur( id_joueur,id_equipe) VALUES(%s,%s)",(id_joueur,id_equipe))
         CONN.commit()
+        print("Joueur ajouté avec succès")
+        time.sleep(1)
         
 def gestion_equipe():
     clear_console()
@@ -95,4 +98,3 @@ def gestion_equipe():
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
             gestion_equipe()
-gestion_equipe()
