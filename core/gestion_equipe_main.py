@@ -3,14 +3,22 @@ from core.changement_de_config import*
 from tabulate import tabulate
 from config import *
 import random
+import time
 
 def afficher_joueurs_disponibles():
-    sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur FROM joueur"
+    sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur, blessure_joueur FROM joueur"
     CURSOR.execute(sql)
     result = CURSOR.fetchall()
+    true_result = list()
+    for select in list(result):
+        if result[7] == 0:
+            result[7] = "Non"
+        else:
+            result[7] = 'Oui'
+        true_result.append(select)
     if result:
-        headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance"]
-        table = [list(row) for row in result]
+        headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance","Blessure"]
+        table = [list(row) for row in true_result]
         print("Joueurs Disponibles :")
         print(tabulate(table, headers, tablefmt="grid"))
     else:
@@ -81,6 +89,8 @@ def recruter_joueur(): #Fonction principale de recrutement des joueurs(main)
         id_equipe = choisir_equipe()
         CURSOR.execute("INSERT INTO equipe_joueur( id_joueur,id_equipe) VALUES(%s,%s)",(id_joueur,id_equipe))
         CONN.commit()
+        print("Joueur ajouté avec succès")
+        time.sleep(1)
         
 def gestion_equipe():
     clear_console()
@@ -95,4 +105,3 @@ def gestion_equipe():
         afficher_joueurs_disponibles()
         if input("Entrer pour quitter : ") == "" :
             gestion_equipe()
-gestion_equipe()
