@@ -1,5 +1,6 @@
 import os
 from config import*
+import time
 
 def clear_console():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -56,7 +57,30 @@ def creation_connexion_equipe()->int:#retourne l'id de l'equipe pour remplir la 
         return int(CURSOR.lastrowid)
     
 def choisir_equipe():
-        nom_equipe = input("Sélectionner une equipe existante : ")
-        CURSOR.execute("SELECT id_equipe FROM equipe WHERE nom_equipe = %s",(nom_equipe,))
-        id_equipe = CURSOR.fetchone()[0]
-        return id_equipe
+        try:
+            nom_equipe = input("Sélectionner une equipe existante : ")
+            CURSOR.execute("SELECT id_equipe FROM equipe WHERE nom_equipe = %s",(nom_equipe,))
+            id_equipe = CURSOR.fetchone()[0]
+            return id_equipe
+        except TypeError:
+            print("Cette équipe n'existe pas. Veuillez à la créer dans le recrutement manuelle avant.")
+            input()
+            choisir_equipe()
+
+def supprimer_joueur():
+    choix = input("Souhaitez vous supprimer un joueur de votre équipe ? o/n")
+    try:
+        if choix == "o":
+            choix_joueur = input("Quelle est l'id de votre Joueur ?")
+            CURSOR.execute("DELETE FROM equipe_joueur WHERE id_joueur = %s",(choix_joueur,))
+            CURSOR.execute("DELETE FROM joueur WHERE id_joueur = %s",(choix_joueur,))
+        elif choix == "n":
+            pass
+        else:
+            print("Choix invalide réessayer")
+            time.sleep(2)
+            supprimer_joueur()
+    except mysql.connector.errors.IntegrityError:
+        print("Choix invalide veuillez réessayer")
+        time.sleep(1)
+        supprimer_joueur()
