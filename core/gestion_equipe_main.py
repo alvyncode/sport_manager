@@ -9,16 +9,9 @@ def afficher_joueurs_disponibles():
     sql = "SELECT id_joueur, nom_joueur, prenom_joueur,vitesse_joueur, score_technique_joueur, force_joueur, endurance_joueur, blessure_joueur FROM joueur"
     CURSOR.execute(sql)
     result = CURSOR.fetchall()
-    true_result = list()
-    for select in list(result):
-        if result[7] == 0:
-            result[7] = "Non"
-        else:
-            result[7] = 'Oui'
-        true_result.append(select)
     if result:
         headers = ["ID", "Nom", "Prénom", "Vitesse", "Score Technique", "Force", "Endurance","Blessure"]
-        table = [list(row) for row in true_result]
+        table = [list(row) for row in result]
         print("Joueurs Disponibles :")
         print(tabulate(table, headers, tablefmt="grid"))
     else:
